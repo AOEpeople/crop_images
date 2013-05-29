@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2013-05-27T11:28:54Z" product-name="crop_images">
+		<header/>
+		<body>
+
+			<trans-unit id="tx_cropimages_domain_model_content">
+				<source>Content Element</source>
+			</trans-unit>
+			<trans-unit id="tx_cropimages_domain_model_content.aspectratio">
+				<source>Aspect Ration of the image</source>
+			</trans-unit>
+			<trans-unit id="tx_cropimages_domain_model_content.cropvalues">
+				<source>XML crop values</source>
+			</trans-unit>
+
+			<trans-unit id="cropvalues.x1">
+				<source>X1</source>
+			</trans-unit>
+			<trans-unit id="cropvalues.x2">
+				<source>X2</source>
+			</trans-unit>
+			<trans-unit id="cropvalues.y1">
+				<source>Y1</source>
+			</trans-unit>
+			<trans-unit id="cropvalues.y2">
+				<source>Y2</source>
+			</trans-unit>
+			<trans-unit id="cropvalues.w2">
+				<source>w</source>
+			</trans-unit>
+			<trans-unit id="cropvalues.h">
+				<source>h</source>
+			</trans-unit>
+			<trans-unit id="cropvalues.ar">
+				<source>Aspect Ratio</source>
+			</trans-unit>
+			<trans-unit id="cropvalues.setAr">
+				<source>Set AR</source>
+			</trans-unit>
+			<trans-unit id="cropvalues.save">
+				<source>Save</source>
+			</trans-unit>
+			<trans-unit id="cropvalues.reset">
+				<source>Reset</source>
+			</trans-unit>
+
+			<trans-unit id="layout.close">
+				<source>Close</source>
+			</trans-unit>
+
+
+
+			
+		</body>
+	</file>
+</xliff>

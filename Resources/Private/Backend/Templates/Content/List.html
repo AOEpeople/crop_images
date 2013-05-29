@@ -1,0 +1,110 @@
+<f:layout name="Default" />
+
+<f:section name="content">
+
+	<div id="image">
+		<f:image src="{fileReferenceObject.publicUrl}" maxWidth="600" maxHeight="600" alt="Cropped Image" id="cropbox" />
+	</div>
+
+	<div id="values"
+
+		 data-x1="{currentCropValues.x1}"
+		 data-x2="{currentCropValues.x2}"
+		 data-y1="{currentCropValues.y1}"
+		 data-y2="{currentCropValues.y2}"
+		 data-width="{imageWidth}"
+		 data-height="{imageHeight}"
+		 data-ratio="{aspectRatio}">
+
+		<f:form action="save" arguments="{fileReference: fileReference, referer: referer}">
+
+			<ul class="form-list">
+				<li>
+					<label for="x1"><f:translate key="cropvalues.x1" /></label>
+					<f:form.textfield id="x1" name="x1" value="" />
+				</li>
+				<li>
+					<label for="x2"><f:translate key="cropvalues.x2" /></label>
+					<f:form.textfield id="x2" name="x2" value="" />
+				</li>
+				<li class="clear">
+					<label for="y1"><f:translate key="cropvalues.y1" /></label>
+					<f:form.textfield id="y1" name="y1" value="" />
+				</li>
+				<li>
+					<label for="y2"><f:translate key="cropvalues.y2" /></label>
+					<f:form.textfield id="y2" name="y2" value="" />
+				</li>
+				<li class="clear">
+					<label for="w"><f:translate key="cropvalues.w" /></label>
+					<f:form.textfield id="w" name="w" value="" />
+				</li>
+				<li>
+					<label for="h"><f:translate key="cropvalues.h" /></label>
+					<f:form.textfield id="h" name="h" value="" />
+				</li>
+				<li class="clear">
+					<label for="ar"><f:translate key="cropvalues.ar" /></label>
+					<f:form.textfield id="ar" name="ar" value="{aspectRatio}" />
+					<input type="button" value="{f:translate(key: 'cropvalues.setAr')}" id="setAR" />
+				</li>
+			</ul>
+
+			<f:form.submit value="{f:translate(key: 'cropvalues.save')}" />
+		</f:form>
+
+		<f:form action="reset" arguments="{fileReference: fileReference, referer: referer}">
+			<f:form.submit value="{f:translate(key: 'cropvalues.reset')}" />
+		</f:form>
+	</div>
+
+	<script type="text/javascript">
+
+		function preview(img, selection) {
+			$("#x1").val(selection.x1);
+			$("#y1").val(selection.y1);
+			$("#x2").val(selection.x2);
+			$("#y2").val(selection.y2);
+			$("#w").val(selection.width);
+			$("#h").val(selection.height);
+			$("#aspectRatio").val(selection.aspectRatio);
+		}
+
+		jQuery(document).ready(function($){
+
+			var $values = $('#values'),
+				cropbox = $("#cropbox").imgAreaSelect({
+
+				x1: $values.attr('data-x1'),
+				x2: $values.attr('data-x2'),
+				y1: $values.attr('data-y1'),
+				y2: $values.attr('data-y2'),
+				aspectRatio: ($values.attr('data-ratio') ? $values.attr('data-ratio') : null),
+				imageWidth: $values.attr('data-width'),
+				imageHeight: $values.attr('data-height'),
+				handles: true,
+				fadeSpeed: 200,
+				onInit: preview,
+				onSelectChange: preview,
+				instance: true
+			});
+
+
+			$("#setAR").click(function() {
+				var selection = cropbox.getSelection();
+				var newAR = $("#ar").val();
+				var ratio = newAR.split(":");
+				var gcd = ratio[0] / ratio[1];
+
+				cropbox.setOptions({
+					aspectRatio : newAR
+				});
+
+				var y2 = selection.y1 + selection.width * gcd;
+				cropbox.setSelection(selection.x1, selection.y1, selection.x2, parseInt(y2), true);
+				cropbox.update();
+			});
+		});
+	</script>
+
+</f:section>

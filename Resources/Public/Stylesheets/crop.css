@@ -1,0 +1,39 @@
+#image{
+	float: left;
+	margin: 0 16px 0 0;
+}
+
+#values{
+
+}
+
+.form-list {
+	overflow: hidden;
+	margin: 0 0 30px;
+}
+
+.form-list li {
+	float: left;
+	margin: 0 16px 6px 0;
+}
+
+.form-list label {
+	display: inline-block;
+	min-width: 22px;
+}
+
+.form-list input[type=text] {
+	width: 38px;
+	text-align: right;
+}
+
+.clear {
+	clear: left;
+}
+
+form > input[type=submit],
+form > input[type=button] {
+	margin: 0 10px 0 0;
+	min-width: 100px;
+	float: left;
+}

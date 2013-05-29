@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2013-05-27T11:28:54Z" product-name="crop_images">
+		<header/>
+		<body>
+
+			<trans-unit id="tx_cropimages_domain_model_content">
+				<source>Content</source>
+			</trans-unit>
+			<trans-unit id="tx_cropimages_domain_model_content.aspectratio">
+				<source>Aspect Ratio</source>
+			</trans-unit>
+			<trans-unit id="tx_cropimages_domain_model_content.cropvalues">
+				<source>Crop</source>
+			</trans-unit>
+			
+			<trans-unit id="tt_content.tx_extbase_type.Tx_CropImages_Content">
+				<source>Crop and Square Thumbnails Content</source>
+			</trans-unit>
+			
+		</body>
+	</file>
+</xliff>

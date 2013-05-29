@@ -1,0 +1,32 @@
+{namespace aijko=Aijko\CropImages\ViewHelpers}
+<aijko:be.container
+		addCssFiles="{0: '{f:uri.resource(path:\'Stylesheets/crop.css\')}', 1: '{f:uri.resource(path:\'Stylesheets/imgareaselect-default.css\')}'}"
+		addJsFiles="{0: '{f:uri.resource(path:\'Scripts/jquery-1.6.2.min.js\')}', 1: '{f:uri.resource(path:\'Scripts/jquery.imgareaselect-0.9.8.pack.js\')}'}">
+
+	<div class="typo3-fullDoc">
+		<div id="typo3-docheader">
+			<div id="typo3-docheader-row1">
+				<div class="buttonsleft">
+					<f:be.buttons.icon uri="{f:uri.action(action:'close', arguments: '{referer: referer}')}" icon="actions-document-close" title="{f:translate(key: 'layout.close')}" />
+				</div>
+				<div class="buttonsright">
+				</div>
+			</div>
+			<div id="typo3-docheader-row2">
+				<div class="docheader-row2-left">
+				</div>
+				<div class="docheader-row2-right">
+					<f:be.pagePath />
+					<f:be.pageInfo />
+				</div>
+			</div>
+
+		</div>
+		<div id="typo3-docbody">
+			<div id="typo3-inner-docbody">
+				<f:flashMessages renderMode="div" />
+				<f:render section="content" />
+			</div>
+		</div>
+	</div>
+</aijko:be.container>
