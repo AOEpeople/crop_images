@@ -47,7 +47,7 @@ class ContentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 	 */
 	public function listAction() {
 
-		$fileReference = (int) \t3lib_div::_GET('fileReference');
+		$fileReference = (int) \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('fileReference');
 		$referer = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_REFERER');
 
 		$fileReferenceObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileReferenceObject($fileReference);
