@@ -60,7 +60,6 @@ class ContainerViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBacken
 	 * @see template
 	 */
 	public function render($pageTitle = '', $enableJumpToUrl = TRUE, $addCssFiles = NULL, $addJsFiles = NULL) {
-
 		$doc = $this->getDocInstance();
 		$pageRenderer = $doc->getPageRenderer();
 		if ($enableJumpToUrl) {

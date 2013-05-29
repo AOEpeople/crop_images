@@ -26,11 +26,8 @@ namespace Aijko\CropImages\Hooks;
  ***************************************************************/
 
 /**
- *
- *
  * @package crop_images
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
  */
 class ContentObjectRenderer implements \TYPO3\CMS\Frontend\ContentObject\ContentObjectGetImageResourceHookInterface{
 
@@ -49,7 +46,6 @@ class ContentObjectRenderer implements \TYPO3\CMS\Frontend\ContentObject\Content
 	 * @return array|void
 	 */
 	public function getImgResourcePostProcess($file, array $configuration, array $imageResource, \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $parent) {
-
 		// Process calls only from contentElements of tt_content
 		if (empty($parent->data) || 'tt_content' != $parent->getCurrentTable()) {
 			return $imageResource;
@@ -104,10 +100,10 @@ class ContentObjectRenderer implements \TYPO3\CMS\Frontend\ContentObject\Content
 		$y1 = $cropValues['y1'];
 
 		$processingConfiguration = array();
-//		$processingConfiguration['maxWidth'] = isset($configuration['maxW.']) ? intval($parent->stdWrap($configuration['maxW'], $configuration['maxW.'])) : intval($configuration['maxW']);
-//		$processingConfiguration['maxHeight'] = isset($configuration['maxH.']) ? intval($parent->stdWrap($configuration['maxH'], $configuration['maxH.'])) : intval($configuration['maxH']);
-//		$processingConfiguration['minWidth'] = isset($configuration['minW.']) ? intval($parent->stdWrap($configuration['minW'], $configuration['minW.'])) : intval($configuration['minW']);
-//		$processingConfiguration['minHeight'] = isset($configuration['minH.']) ? intval($parent->stdWrap($configuration['minH'], $configuration['minH.'])) : intval($configuration['minH']);
+		#$processingConfiguration['maxWidth'] = isset($configuration['maxW.']) ? intval($parent->stdWrap($configuration['maxW'], $configuration['maxW.'])) : intval($configuration['maxW']);
+		#$processingConfiguration['maxHeight'] = isset($configuration['maxH.']) ? intval($parent->stdWrap($configuration['maxH'], $configuration['maxH.'])) : intval($configuration['maxH']);
+		#$processingConfiguration['minWidth'] = isset($configuration['minW.']) ? intval($parent->stdWrap($configuration['minW'], $configuration['minW.'])) : intval($configuration['minW']);
+		#$processingConfiguration['minHeight'] = isset($configuration['minH.']) ? intval($parent->stdWrap($configuration['minH'], $configuration['minH.'])) : intval($configuration['minH']);
 		$processingConfiguration['additionalParameters'] = ' -crop ' . $cWidth . 'x' . $cHeight . '+' . $x1 . '+' . $y1;
 
 		$processedFileObject = $sysReferenceFile->getOriginalFile()->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $processingConfiguration);
@@ -147,4 +143,5 @@ class ContentObjectRenderer implements \TYPO3\CMS\Frontend\ContentObject\Content
 	}
 
 }
+
 ?>

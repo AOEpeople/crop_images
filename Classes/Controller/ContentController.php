@@ -26,11 +26,8 @@ namespace Aijko\CropImages\Controller;
  ***************************************************************/
 
 /**
- *
- *
  * @package crop_images
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
  */
 class ContentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
@@ -41,12 +38,11 @@ class ContentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 	protected $cropValuesService;
 
 	/**
-	 * action list
+	 * List action
 	 *
 	 * @return void
 	 */
 	public function listAction() {
-
 		$fileReference = (int) \TYPO3\CMS\Core\Utility\GeneralUtility::_GET('fileReference');
 		$referer = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_REFERER');
 
@@ -79,9 +75,7 @@ class ContentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 	 * @return void
 	 */
 	public function saveAction($fileReference, $x1, $x2, $y1, $y2, $referer) {
-
 		$fileReferenceObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileReferenceObject($fileReference);
-
 		$this->cropValuesService->storeCropValuesForFileReference($fileReferenceObject, $x1, $x2, $y1, $y2);
 
 		// TODO: make flash message work, this won't display :-(
@@ -100,9 +94,7 @@ class ContentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 	 * @return void
 	 */
 	public function resetAction($fileReference, $referer) {
-
 		$fileReferenceObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileReferenceObject($fileReference);
-
 		$this->cropValuesService->resetCropValuesForFileReference($fileReferenceObject);
 
 		// TODO: make flash message work, this won't display :-(
@@ -124,4 +116,5 @@ class ContentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 	}
 
 }
+
 ?>

@@ -26,11 +26,8 @@ namespace Aijko\CropImages\Service;
  ***************************************************************/
 
 /**
- *
- *
  * @package crop_images
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
- *
  */
 class CropValues {
 
@@ -45,7 +42,6 @@ class CropValues {
 	 * @return void
 	 */
 	public function storeCropValuesForFileReference(\TYPO3\CMS\Core\Resource\FileReference $fileReference, $x1, $x2, $y1, $y2) {
-
 		$xml = '<?xml version="1.0" encoding="UTF-8" ?>
 				<images>
 				  <image x1="0" y1="0" x2="0" y2="0" tstamp="0">' . $fileReference->getName() . '</image>
@@ -90,7 +86,6 @@ class CropValues {
 	 * @return array
 	 */
 	public function getCropValuesFromFileReference(\TYPO3\CMS\Core\Resource\FileReference $fileReference) {
-
 		$cropData = $fileReference->getProperty('tx_cropimages_cropvalues');
 		$currentCropValues = array();
 
@@ -124,7 +119,6 @@ class CropValues {
 	 * @return array
 	 */
 	public function getDefaultCropValuesFromFileReference(\TYPO3\CMS\Core\Resource\FileReference $fileReference) {
-
 		$defaultCropValues = array();
 
 		$aspectRatio = $fileReference->getProperty('tx_cropimages_aspectratio');
@@ -178,4 +172,5 @@ class CropValues {
 	}
 
 }
+
 ?>
