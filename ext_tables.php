@@ -88,5 +88,6 @@ $tempColumns = array (
 \TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('sys_file_reference');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('sys_file_reference', $tempColumns);
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette('sys_file_reference', 'imageoverlayPalette', '--linebreak--, tx_cropimages_aspectratio, tx_cropimages_cropvalues');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette('sys_file_reference', 'basicoverlayPalette', '--linebreak--, tx_cropimages_aspectratio, tx_cropimages_cropvalues');
 
 ?>

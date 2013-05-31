@@ -46,39 +46,47 @@ class ContentObjectRenderer implements \TYPO3\CMS\Frontend\ContentObject\Content
 	 * @return array|void
 	 */
 	public function getImgResourcePostProcess($file, array $configuration, array $imageResource, \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $parent) {
-		// Process calls only from contentElements of tt_content
-		if (empty($parent->data) || 'tt_content' != $parent->getCurrentTable()) {
+
+		$treatIdAsReference = (bool) $configuration['treatIdAsReference'];
+
+		// Process calls only with filled data
+		if (!$treatIdAsReference && empty($parent->data)) {
 			return $imageResource;
 		}
 
 		// Skip records with no images
-		if (empty($parent->data['image'])) {
+		if (!$treatIdAsReference && empty($parent->data['image'])) {
 			return $imageResource;
 		}
 
 		$currentData = $parent->data;
 		$table = $parent->getCurrentTable();
 
-		// Get sys_reference files to be able to access the crop values and aspect ration
-		// TODO: there has to be a better way to find the reference file
-
 		/** @var $fileRepository \TYPO3\CMS\Core\Resource\FileRepository */
 		$fileRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Resource\\FileRepository');
-
-		$files = $fileRepository->findByRelation($table, 'image', isset($currentData['_LOCALIZED_UID']) ? intval($currentData['_LOCALIZED_UID']) : intval($currentData['uid']));
-
-		if (0 >= count($files)) {
-			return $imageResource;
-		}
 
 		/** @var  $sysReferenceFile \TYPO3\CMS\Core\Resource\FileReference */
 		$sysReferenceFile = NULL;
 
-		foreach ($files as $currentFile) {
-			$originalFileUid = $currentFile->getOriginalFile()->getUid();
+		// Get sys_reference files to be able to access the crop values and aspect ration // TODO: improve this
+		if ($treatIdAsReference) {
 
-			if ($originalFileUid == $file) {
-				$sysReferenceFile = $currentFile;
+			$sysReferenceFile = $fileRepository->findFileReferenceByUid($file);
+
+		} else if ('tt_content' == $table) {
+
+			$files = $fileRepository->findByRelation($table, 'image', isset($currentData['_LOCALIZED_UID']) ? intval($currentData['_LOCALIZED_UID']) : intval($currentData['uid']));
+
+			if (0 >= count($files)) {
+				return $imageResource;
+			}
+
+			foreach ($files as $currentFile) {
+				$originalFileUid = $currentFile->getOriginalFile()->getUid();
+
+				if ($originalFileUid == $file) {
+					$sysReferenceFile = $currentFile;
+				}
 			}
 		}
 
