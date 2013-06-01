@@ -101,22 +101,48 @@ class ContentObjectRenderer implements \TYPO3\CMS\Frontend\ContentObject\Content
 			return $imageResource;
 		}
 
-		$cWidth = intval($cropValues['x2'] - $cropValues['x1']);
-		$cHeight = intval($cropValues['y2'] - $cropValues['y1']);
+		$cropWidth = intval($cropValues['x2'] - $cropValues['x1']);
+		$cropHeight = intval($cropValues['y2'] - $cropValues['y1']);
 
 		$x1 = $cropValues['x1'];
 		$y1 = $cropValues['y1'];
 
+		// Get processing configuration
 		$processingConfiguration = array();
-		#$processingConfiguration['maxWidth'] = isset($configuration['maxW.']) ? intval($parent->stdWrap($configuration['maxW'], $configuration['maxW.'])) : intval($configuration['maxW']);
-		#$processingConfiguration['maxHeight'] = isset($configuration['maxH.']) ? intval($parent->stdWrap($configuration['maxH'], $configuration['maxH.'])) : intval($configuration['maxH']);
-		#$processingConfiguration['minWidth'] = isset($configuration['minW.']) ? intval($parent->stdWrap($configuration['minW'], $configuration['minW.'])) : intval($configuration['minW']);
-		#$processingConfiguration['minHeight'] = isset($configuration['minH.']) ? intval($parent->stdWrap($configuration['minH'], $configuration['minH.'])) : intval($configuration['minH']);
-		$processingConfiguration['additionalParameters'] = ' -crop ' . $cWidth . 'x' . $cHeight . '+' . $x1 . '+' . $y1;
+		$processingConfiguration['width'] = isset($configuration['width.']) ? $parent->stdWrap($configuration['width'], $configuration['width.']) : $configuration['width'];
+		$processingConfiguration['height'] = isset($configuration['height.']) ? $parent->stdWrap($configuration['height'], $configuration['height.']) : $configuration['height'];
+		$processingConfiguration['fileExtension'] = isset($configuration['ext.']) ? $parent->stdWrap($configuration['ext'], $configuration['ext.']) : $configuration['ext'];
+		$processingConfiguration['maxWidth'] = isset($configuration['maxW.']) ? intval($parent->stdWrap($configuration['maxW'], $configuration['maxW.'])) : intval($configuration['maxW']);
+		$processingConfiguration['maxHeight'] = isset($configuration['maxH.']) ? intval($parent->stdWrap($configuration['maxH'], $configuration['maxH.'])) : intval($configuration['maxH']);
+		$processingConfiguration['minWidth'] = isset($configuration['minW.']) ? intval($parent->stdWrap($configuration['minW'], $configuration['minW.'])) : intval($configuration['minW']);
+		$processingConfiguration['minHeight'] = isset($configuration['minH.']) ? intval($parent->stdWrap($configuration['minH'], $configuration['minH.'])) : intval($configuration['minH']);
 
-		$processedFileObject = $sysReferenceFile->getOriginalFile()->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $processingConfiguration);
+		/** @var  $gifBuilder \TYPO3\CMS\Core\Imaging\GraphicalFunctions */
+		$gifBuilder = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Imaging\\GraphicalFunctions');
+
+		// Get original image dimensions and adjust them to the target crop dimensions
+		$info = $gifBuilder->getImageDimensions($sysReferenceFile->getOriginalFile()->getPublicUrl());
+		$info[0] = $cropWidth;
+		$info[1] = $cropHeight;
+
+		// Take into account the user configuration
+		$data = $gifBuilder->getImageScale($info, $processingConfiguration['width'], $processingConfiguration['height'], $processingConfiguration);
+
+		$targetWidth = $data[0];
+		$targetHeight = $data[1];
+
+		// Build our own query and process it
+		$cropConfiguration = array();
+		$cropConfiguration['additionalParameters'] = ' -crop ' . $cropWidth . 'x' . $cropHeight . '+' . $x1 . '+' . $y1 . ' -geometry ' . $targetWidth . 'x' . $targetHeight;
+
+		if ($GLOBALS['TSFE']->config['config']['meaningfulTempFilePrefix']) {
+			$cropConfiguration['useTargetFileNameAsPrefix'] = 1;
+		}
+
+		$processedFileObject = $sysReferenceFile->getOriginalFile()->process(\TYPO3\CMS\Core\Resource\ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $cropConfiguration);
 
 		$hash = $processedFileObject->calculateChecksum();
+
 		// store info in the TSFE template cache (kept for backwards compatibility)
 		if ($processedFileObject->isProcessed() && !isset($GLOBALS['TSFE']->tmpl->fileCache[$hash])) {
 			$GLOBALS['TSFE']->tmpl->fileCache[$hash] = array(
