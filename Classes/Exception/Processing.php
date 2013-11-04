@@ -1,4 +1,5 @@
 <?php
+namespace Aijko\CropImages\Exception;
 
 /***************************************************************
  *  Copyright notice
@@ -24,14 +25,13 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-if (!defined ('TYPO3_MODE')) die ('Access denied.');
+/**
+ * An exception when something is wrong within an XML file
+ *
+ * @author Erik Frister <info@aijko.de>
+ */
+class Processing extends \Exception {
 
-// Hooks
-// $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getImgResource'][$_EXTKEY] = 'EXT:' . $_EXTKEY . '/Classes/Hooks/ContentObjectRenderer.php:Aijko\CropImages\Hooks\ContentObjectRenderer';
-
-if (TYPO3_MODE == 'BE') {
-	// Hide Module
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig('options.hideModules := addToList(CropImagesCropmainmodule)');
 }
 
 ?>

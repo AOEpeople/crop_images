@@ -1,4 +1,5 @@
 <?php
+namespace Aijko\CropImages\Utility;
 
 /***************************************************************
  *  Copyright notice
@@ -24,14 +25,41 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-if (!defined ('TYPO3_MODE')) die ('Access denied.');
+/**
+ * @package crop_images
+ * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
+ */
+class EmConfiguration {
 
-// Hooks
-// $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_content.php']['getImgResource'][$_EXTKEY] = 'EXT:' . $_EXTKEY . '/Classes/Hooks/ContentObjectRenderer.php:Aijko\CropImages\Hooks\ContentObjectRenderer';
+	const ENABLE_DEFAULT_RESPONSIVE_TYPES = 'enableDefaultResponsiveTypes';
 
-if (TYPO3_MODE == 'BE') {
-	// Hide Module
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig('options.hideModules := addToList(CropImagesCropmainmodule)');
+	/**
+	 * Parses the extension settings.
+	 *
+	 * @param string $key
+	 * @return mixed
+	 */
+	public static function getSetting($key) {
+		$configuration = self::parseSettings();
+		if (!isset($configuration[$key])) {
+			return NULL;
+		}
+		return $configuration[$key];
+	}
+
+	/**
+	 * Parse settings and return it as array
+	 *
+	 * @return array unserialized extconf settings
+	 */
+	public static function parseSettings() {
+		$settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['crop_images']);
+		if (!is_array($settings)) {
+			$settings = array();
+		}
+		return $settings;
+	}
+
 }
 
 ?>

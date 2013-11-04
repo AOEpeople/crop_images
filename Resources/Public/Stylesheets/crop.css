@@ -1,10 +1,25 @@
-#image{
+/**
+ * Tab Container
+ **/
+.responsiveImageContainer {
+	padding: 16px 22px;
+	width: 94%;
+}
+
+.tabTitle {
+	margin-bottom: 18px !important;
+}
+
+/**
+ * Cropping Structure
+ **/
+.baseImage {
 	float: left;
 	margin: 0 16px 0 0;
 }
 
-#values{
-
+.values {
+	overflow: hidden;
 }
 
 .form-list {

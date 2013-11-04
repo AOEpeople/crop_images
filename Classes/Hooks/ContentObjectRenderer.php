@@ -47,6 +47,12 @@ class ContentObjectRenderer implements \TYPO3\CMS\Frontend\ContentObject\Content
 	 */
 	public function getImgResourcePostProcess($file, array $configuration, array $imageResource, \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer $parent) {
 
+//		\t3lib_utility_Debug::debug($configuration, __LINE__.__FILE__);
+//		\t3lib_utility_Debug::debug($parent->data, __LINE__.__FILE__);
+//		\t3lib_utility_Debug::debug($file, __LINE__.__FILE__);
+//		die;
+		return $imageResource;
+
 		$treatIdAsReference = (bool) $configuration['treatIdAsReference'];
 
 		// Process calls only with filled data
@@ -134,6 +140,9 @@ class ContentObjectRenderer implements \TYPO3\CMS\Frontend\ContentObject\Content
 		// Build our own query and process it
 		$cropConfiguration = array();
 		$cropConfiguration['additionalParameters'] = ' -crop ' . $cropWidth . 'x' . $cropHeight . '+' . $x1 . '+' . $y1 . ' -geometry ' . $targetWidth . 'x' . $targetHeight;
+
+		\t3lib_utility_Debug::debug($cropConfiguration, __LINE__.__FILE__);
+
 
 		if ($GLOBALS['TSFE']->config['config']['meaningfulTempFilePrefix']) {
 			$cropConfiguration['useTargetFileNameAsPrefix'] = 1;

@@ -1,0 +1,2 @@
+  # cat=basic//20; type=boolean; label=Enable default responsive image types
+enableDefaultResponsiveTypes = 1

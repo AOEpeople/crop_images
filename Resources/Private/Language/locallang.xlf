@@ -15,28 +15,28 @@
 			</trans-unit>
 
 			<trans-unit id="cropvalues.x1">
-				<source>X1</source>
+				<source>x1</source>
 			</trans-unit>
 			<trans-unit id="cropvalues.x2">
-				<source>X2</source>
+				<source>x2</source>
 			</trans-unit>
 			<trans-unit id="cropvalues.y1">
-				<source>Y1</source>
+				<source>y1</source>
 			</trans-unit>
 			<trans-unit id="cropvalues.y2">
-				<source>Y2</source>
+				<source>y2</source>
 			</trans-unit>
 			<trans-unit id="cropvalues.w">
-				<source>w</source>
+				<source>Width</source>
 			</trans-unit>
 			<trans-unit id="cropvalues.h">
-				<source>h</source>
+				<source>Height</source>
 			</trans-unit>
 			<trans-unit id="cropvalues.ar">
 				<source>Aspect Ratio</source>
 			</trans-unit>
-			<trans-unit id="cropvalues.setAr">
-				<source>Set AR</source>
+			<trans-unit id="cropvalues.update">
+				<source>Update</source>
 			</trans-unit>
 			<trans-unit id="cropvalues.save">
 				<source>Save</source>
@@ -47,6 +47,26 @@
 
 			<trans-unit id="layout.close">
 				<source>Close</source>
+			</trans-unit>
+			<trans-unit id="layout.responsivetype.default">
+				<source>Desktop</source>
+			</trans-unit>
+
+			<trans-unit id="messages.noImages">
+				<source>No Responsive Image Versions were found for the current image.</source>
+			</trans-unit>
+
+			<trans-unit id="message.success.title">
+				<source>Save successful</source>
+			</trans-unit>
+			<trans-unit id="message.success.description">
+				<source>The new cropping settings have been saved.</source>
+			</trans-unit>
+			<trans-unit id="message.reset.title">
+				<source>Croping reset</source>
+			</trans-unit>
+			<trans-unit id="message.reset.description">
+				<source>The cropping was successfully reset.</source>
 			</trans-unit>
 
 

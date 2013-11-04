@@ -1,13 +1,17 @@
 {namespace aijko=Aijko\CropImages\ViewHelpers}
 <aijko:be.container
 		addCssFiles="{0: '{f:uri.resource(path:\'Stylesheets/crop.css\')}', 1: '{f:uri.resource(path:\'Stylesheets/imgareaselect-default.css\')}'}"
-		addJsFiles="{0: '{f:uri.resource(path:\'Scripts/jquery-1.6.2.min.js\')}', 1: '{f:uri.resource(path:\'Scripts/jquery.imgareaselect-0.9.8.pack.js\')}'}">
+		addJsFiles="{0: '{f:uri.resource(path:\'Scripts/jquery-1.6.2.min.js\')}',
+					 1: '{f:uri.resource(path:\'Scripts/jquery.imgareaselect-0.9.8.pack.js\')}',
+					 2: '{f:uri.resource(path:\'Scripts/List.js\')}',
+					 3: '{f:uri.resource(path:\'JavaScript/tabmenu.js\', extensionName:\'backend\')}'}">
 
 	<div class="typo3-fullDoc">
 		<div id="typo3-docheader">
 			<div id="typo3-docheader-row1">
 				<div class="buttonsleft">
 					<f:be.buttons.icon uri="{f:uri.action(action:'close', arguments: '{referer: referer}')}" icon="actions-document-close" title="{f:translate(key: 'layout.close')}" />
+					<f:be.buttons.icon uri="#" icon="actions-document-save-close" title="{f:translate(key: 'cropvalues.save')}" />
 				</div>
 				<div class="buttonsright">
 				</div>

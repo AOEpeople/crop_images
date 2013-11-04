@@ -13,7 +13,18 @@
 			<trans-unit id="tx_cropimages_domain_model_content.cropvalues">
 				<source>Crop</source>
 			</trans-unit>
-			
+			<trans-unit id="tx_cropimages_domain_model_content.tx_cropimages_responsiveimages">
+				<source>Responsive Images</source>
+			</trans-unit>
+			<trans-unit id="tx_cropimages_domain_model_content.tx_cropimages_responsiveimages.createnew">
+				<source>Create New Responsive Version</source>
+			</trans-unit>
+			<trans-unit id="tx_cropimages_domain_model_content.tx_cropimages_responsivetype">
+				<source>Type</source>
+			</trans-unit>
+
+
+
 			<trans-unit id="tt_content.tx_extbase_type.Tx_CropImages_Content">
 				<source>Crop and Square Thumbnails Content</source>
 			</trans-unit>

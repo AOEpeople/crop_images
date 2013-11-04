@@ -39,28 +39,48 @@ class CropValues {
 	 * @param integer$x2
 	 * @param integer $y1
 	 * @param integer $y2
+	 * @param integer $deviceKey
 	 * @return void
 	 */
-	public function storeCropValuesForFileReference(\TYPO3\CMS\Core\Resource\FileReference $fileReference, $x1, $x2, $y1, $y2) {
-		$xml = '<?xml version="1.0" encoding="UTF-8" ?>
-				<images>
-				  <image x1="0" y1="0" x2="0" y2="0" tstamp="0">' . $fileReference->getName() . '</image>
-				</images>';
+	public function storeCropValuesForFileReference(\TYPO3\CMS\Core\Resource\FileReference $fileReference, $x1, $x2, $y1, $y2, $deviceKey) {
 
+		// Load data from SQL, as the file reference cropvalues could be outdated.
+		$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('sys_file_reference', $fileReference->getUid(), 'tx_cropimages_cropvalues');
+		$xml = $row['tx_cropimages_cropvalues'];
+
+		$blueprintXml = trim('
+			<?xml version="1.0" encoding="UTF-8" ?>
+			<images><image x1="0" y1="0" x2="0" y2="0" tstamp="0" device="' . $deviceKey . '">' . $fileReference->getName() . '</image></images>
+		');
+
+		if (empty($xml)) {
+			$xml = $blueprintXml;
+		}
+
+		// Get image with the correct device key
 		$cropXml = simplexml_load_string($xml);
-		$cropData = $cropXml->xpath('//image[. ="' . $fileReference->getName() . '"]');
-		$values = $cropData[0];
+		$cropData = $cropXml->xpath('//image[@device=' . $deviceKey . ']');
 
-		$values["x1"] = $x1;
-		$values["y1"] = $y1;
-		$values["x2"] = $x2;
-		$values["y2"] = $y2;
-		$values["tstamp"] = time();
+		// Add new element if the current device does not exist in the XML string
+		if (empty($cropData)) {
+			$values = $cropXml->addChild('image', $fileReference->getName());
+		} else {
+			$values = $cropData[0];
+		}
 
+		// Update cropping information
+		$values['x1'] = $x1;
+		$values['y1'] = $y1;
+		$values['x2'] = $x2;
+		$values['y2'] = $y2;
+		$values['tstamp'] = time();
+		$values['device'] = $deviceKey;
+
+		// Store in database
 		$fieldValues = array (
 			'tx_cropimages_cropvalues' => $cropXml->asXML()
 		);
-		// TODO: make better, this is not using appropriate APIs
+
 		$GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_file_reference', 'uid = ' .$fileReference->getUid(), $fieldValues);
 	}
 
@@ -83,9 +103,10 @@ class CropValues {
 	 * Returns the crop values from a given file reference
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\FileReference $fileReference
+	 * @param integer $deviceKey
 	 * @return array
 	 */
-	public function getCropValuesFromFileReference(\TYPO3\CMS\Core\Resource\FileReference $fileReference) {
+	public function getCropValuesFromFileReference(\TYPO3\CMS\Core\Resource\FileReference $fileReference, $deviceKey) {
 		$cropData = $fileReference->getProperty('tx_cropimages_cropvalues');
 		$currentCropValues = array();
 
@@ -95,7 +116,7 @@ class CropValues {
 			return $currentCropValues;
 		}
 
-		$cropData = $cropXml->xpath('//image');
+		$cropData = $cropXml->xpath('//image[@device=' . $deviceKey . ']');
 		$cropValues = $cropData[0];
 
 		if (!$cropValues) {
