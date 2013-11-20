@@ -32,6 +32,14 @@ namespace Aijko\CropImages\Service;
 class CropValues {
 
 	/**
+	 * Name of backend utility class
+	 * Put here to allow overriding in unit tests with late static binding
+	 *
+	 * @var string
+	 */
+	protected $staticBackendUtilityClass = '\TYPO3\CMS\Backend\Utility\BackendUtility';
+
+	/**
 	 * Stores the crop values for given x-y values and a file reference
 	 *
 	 * @param \TYPO3\CMS\Core\Resource\FileReference $fileReference
@@ -40,13 +48,17 @@ class CropValues {
 	 * @param integer $y1
 	 * @param integer $y2
 	 * @param integer $deviceKey
+	 * @param int $time
 	 * @return void
 	 */
-	public function storeCropValuesForFileReference(\TYPO3\CMS\Core\Resource\FileReference $fileReference, $x1, $x2, $y1, $y2, $deviceKey) {
+	public function storeCropValuesForFileReference(\TYPO3\CMS\Core\Resource\FileReference $fileReference, $x1, $x2, $y1, $y2, $deviceKey, $time = NULL) {
 
 		// Load data from SQL, as the file reference cropvalues could be outdated.
-		$row = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord('sys_file_reference', $fileReference->getUid(), 'tx_cropimages_cropvalues');
+		$backendUtilityClassName = $this->staticBackendUtilityClass;
+		$row = $backendUtilityClassName::getRecord('sys_file_reference', $fileReference->getUid(), 'tx_cropimages_cropvalues');
 		$xml = $row['tx_cropimages_cropvalues'];
+
+		$time = (NULL === $time) ? time() : $time;
 
 		$blueprintXml = trim('
 			<?xml version="1.0" encoding="UTF-8" ?>
@@ -73,12 +85,12 @@ class CropValues {
 		$values['y1'] = $y1;
 		$values['x2'] = $x2;
 		$values['y2'] = $y2;
-		$values['tstamp'] = time();
+		$values['tstamp'] = $time;
 		$values['device'] = $deviceKey;
 
 		// Store in database
 		$fieldValues = array (
-			'tx_cropimages_cropvalues' => $cropXml->asXML()
+			'tx_cropimages_cropvalues' => trim($cropXml->asXML())
 		);
 
 		$GLOBALS['TYPO3_DB']->exec_UPDATEquery('sys_file_reference', 'uid = ' .$fileReference->getUid(), $fieldValues);

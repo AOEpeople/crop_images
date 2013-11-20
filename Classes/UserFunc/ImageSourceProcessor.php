@@ -44,17 +44,29 @@ class ImageSourceProcessor extends AbstractImageProcessor {
 
 		$this->validateContext();
 		$this->notifyObserver();
+		$responsiveUid = $this->getResponsiveUid();
+		if (FALSE !== $responsiveUid) {
+			$content = $responsiveUid;
+		}
 
+		return $content;
+	}
+
+	/**
+	 * Returns the actual new responsive uid
+	 *
+	 * @return bool|int
+	 */
+	protected function getResponsiveUid() {
 		// Get the cropping information for the device corresponding to the current source collection item
 		$sysReferenceFile = $this->getCurrentReferenceFile();
 		if (!$sysReferenceFile) {
-			return $content;
+			return FALSE;
 		}
 		$device = $this->getDevice();
 		$responsiveReferenceFile = $this->getReferenceFileService()->getReferenceFileByDevice($sysReferenceFile, $device);
 		$responsiveUid = $responsiveReferenceFile->getOriginalFile()->getUid();
-		$content = $responsiveUid;
-		return $content;
+		return $responsiveUid;
 	}
 
 }

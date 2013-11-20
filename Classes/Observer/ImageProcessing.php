@@ -118,7 +118,7 @@ class ImageProcessing implements \TYPO3\CMS\Core\SingletonInterface {
 			// Set initial value for global counter
 			if (FALSE === $globalCounter) {
 				$globalCounter = $counter;
-				break;
+				continue;
 			}
 			if ($counter !== $globalCounter) {
 				throw new \Aijko\CropImages\Exception\Processing('Not all image processors have been called an equal amount of times.', 1383115246);

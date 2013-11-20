@@ -33,6 +33,7 @@ class ReferenceFileService implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var \TYPO3\CMS\Core\Resource\FileRepository
+	 * @inject
 	 */
 	protected $fileRepository = NULL;
 

@@ -60,13 +60,12 @@ class CropParameterProcessor extends AbstractImageProcessor {
 		$this->validateContext();
 		$this->notifyObserver();
 
-		$device = $this->getDevice();
-
 		// Get the cropping information for the device corresponding to the current source collection item
 		$sysReferenceFile = $this->getCurrentReferenceFile();
 		if (!$sysReferenceFile) {
 			return $content;
 		}
+
 		$device = $this->getDevice();
 		$responsiveReferenceFile = $this->getReferenceFileService()->getReferenceFileByDevice($sysReferenceFile, $device);
 
