@@ -24,12 +24,7 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-use \TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use \TYPO3\CMS\Core\Utility\VersionNumberUtility;
-use \Aijko\CropImages\Utility\EmConfiguration;
-
 if (!defined('TYPO3_MODE')) die ('Access denied.');
-
 
 if (TYPO3_MODE === 'BE') {
 
@@ -54,7 +49,7 @@ if (TYPO3_MODE === 'BE') {
 /**
  * Add static Typoscript template
  */
-ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'Image cropper');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'Image cropper');
 
 
 /**
@@ -99,12 +94,12 @@ $tempColumns = array (
 	)
 );
 
-ExtensionManagementUtility::addTCAcolumns('sys_file_reference', $tempColumns);
-ExtensionManagementUtility::addFieldsToPalette('sys_file_reference', 'imageoverlayPalette', '--linebreak--, tx_cropimages_aspectratio, tx_cropimages_cropvalues');
-ExtensionManagementUtility::addFieldsToPalette('sys_file_reference', 'basicoverlayPalette', '--linebreak--, tx_cropimages_aspectratio, tx_cropimages_cropvalues');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('sys_file_reference', $tempColumns);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette('sys_file_reference', 'imageoverlayPalette', '--linebreak--, tx_cropimages_aspectratio, tx_cropimages_cropvalues');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette('sys_file_reference', 'basicoverlayPalette', '--linebreak--, tx_cropimages_aspectratio, tx_cropimages_cropvalues');
 
 // Responsive Functionality available in v6.2
-$numericVersion = VersionNumberUtility::convertVersionNumberToInteger(VersionNumberUtility::getNumericTypo3Version());
+$numericVersion = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(\TYPO3\CMS\Core\Utility\VersionNumberUtility::getNumericTypo3Version());
 if ($numericVersion >= 6002000) {
 
 	$tempColumns = array (
@@ -117,7 +112,7 @@ if ($numericVersion >= 6002000) {
 					'FIELD:tablenames:=:tt_content',
 				),
 			),
-			'config' => ExtensionManagementUtility::getFileFieldTCAConfig(
+			'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
 				'image',
 				array(
 					'appearance' => array(
@@ -174,12 +169,12 @@ if ($numericVersion >= 6002000) {
 		),
 	);
 
-	ExtensionManagementUtility::addTCAcolumns('sys_file_reference', $tempColumns);
-	ExtensionManagementUtility::addFieldsToPalette('sys_file_reference', 'imageoverlayPalette', '--linebreak--, tx_cropimages_responsiveimages');
-	ExtensionManagementUtility::addFieldsToPalette('sys_file_reference', 'basicoverlayPalette', '--linebreak--, tx_cropimages_responsiveimages');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('sys_file_reference', $tempColumns);
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette('sys_file_reference', 'imageoverlayPalette', '--linebreak--, tx_cropimages_responsiveimages');
+	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette('sys_file_reference', 'basicoverlayPalette', '--linebreak--, tx_cropimages_responsiveimages');
 
 	// Add the two default responsive types
-	if (EmConfiguration::getSetting(EmConfiguration::ENABLE_DEFAULT_RESPONSIVE_TYPES)) {
+	if (\Aijko\CropImages\Utility\EmConfiguration::getSetting(\Aijko\CropImages\Utility\EmConfiguration::ENABLE_DEFAULT_RESPONSIVE_TYPES)) {
 		\Aijko\CropImages\Utility\ResponsiveType::addNewResponsiveType('Tablet', 1, 'src-tablet,src-tablet-highres');
 		\Aijko\CropImages\Utility\ResponsiveType::addNewResponsiveType('Mobile', 2, 'src-phone,src-phone-highres');
 	}
