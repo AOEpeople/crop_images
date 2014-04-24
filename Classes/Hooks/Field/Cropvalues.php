@@ -25,6 +25,9 @@ namespace Aijko\CropImages\Hooks\Field;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use \TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
+
 /**
  * @package crop_images
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
@@ -43,8 +46,16 @@ class Cropvalues {
 		$currentRow = $pa['row'];
 		$elementUid = $currentRow['uid'];
 		$pageId = $currentRow['pid'];
-		$modUrl = 'mod.php?M=CropImagesCropmainmodule_CropImagesCropper&id=' . $pageId . '&fileReference=' . $elementUid;
-		return '<a href="' . $modUrl . '"><img src="' . $relPath . 'Resources/Public/Icons/crop.png" /></a>';
+		$moduleName = 'CropImagesCropmainmodule_CropImagesCropper';
+
+		$urlParameters = array(
+			'id' => $pageId,
+			'M' => $moduleName,
+			'moduleToken' => FormProtectionFactory::get()->generateToken('moduleCall', $moduleName),
+			'fileReference' => $elementUid,
+		);
+		$url = 'mod.php?' . ltrim(GeneralUtility::implodeArrayForUrl('', $urlParameters, '', TRUE, TRUE), '&');
+		return '<a href="' . $url . '"><img src="' . $relPath . 'Resources/Public/Icons/crop.png" /></a>';
 	}
 
 }
