@@ -74,7 +74,7 @@ $tempColumns = array (
 				array('13:9', '13:9'),
 				array('16:9', '16:9'),
 			),
-			'minitems' => 1,
+			'minitems' => 0,
 			'maxitems' => 1,
 		)
 	),
