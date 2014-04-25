@@ -4,7 +4,7 @@ namespace Aijko\CropImages\Tests\Unit\UserFunc;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 aijko GmbH <info@aijko.de>
+ *  (c) 2014 AIJKO GmbH <info@aijko.com>
  *
  *  All rights reserved
  *
@@ -41,7 +41,7 @@ abstract class AbstractProcessorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseT
 
 	/**
 	 * @test
-	 * @expectedException \Aijko\CropImages\Exception\Processing
+	 * @expectedException \Aijko\CropImages\Exception\ProcessingException
 	 */
 	public function triggerExceptionOnInvalidCObjectContext() {
 		$GLOBALS['TSFE'] = new \stdClass();
@@ -55,7 +55,7 @@ abstract class AbstractProcessorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseT
 
 	/**
 	 * @test
-	 * @expectedException \Aijko\CropImages\Exception\Processing
+	 * @expectedException \Aijko\CropImages\Exception\ProcessingException
 	 */
 	public function triggerExceptionOnInvalidTsfeContext() {
 		$this->fixture->cObj = new \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer();
@@ -64,7 +64,7 @@ abstract class AbstractProcessorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseT
 
 	/**
 	 * @test
-	 * @expectedException \Aijko\CropImages\Exception\Processing
+	 * @expectedException \Aijko\CropImages\Exception\ProcessingException
 	 */
 	public function triggerExceptionOnInvalidTableContext() {
 		$GLOBALS['TSFE'] = new \stdClass();
@@ -79,7 +79,7 @@ abstract class AbstractProcessorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseT
 		$stubCObj
 			->expects($this->any())
 			->method('getCurrentVal')
-			->will($this->returnValue(3));
+			->will($this->returnValue(-1));
 
 		$this->fixture->cObj = $stubCObj;
 		$this->fixture->process('', array());
@@ -89,7 +89,7 @@ abstract class AbstractProcessorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseT
 
 	/**
 	 * @test
-	 * @expectedException \Aijko\CropImages\Exception\Processing
+	 * @expectedException \Aijko\CropImages\Exception\ProcessingException
 	 */
 	public function triggerExceptionOnInvalidContentValueContext() {
 		$GLOBALS['TSFE'] = new \stdClass();
@@ -128,7 +128,7 @@ abstract class AbstractProcessorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseT
 		$stubCObj
 			->expects($this->any())
 			->method('getCurrentVal')
-			->will($this->returnValue(3));
+			->will($this->returnValue(-1));
 
 		$this->fixture->cObj = $stubCObj;
 		$this->fixture->process('', array());
@@ -170,7 +170,7 @@ abstract class AbstractProcessorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseT
 		$stubCObj
 			->expects($this->any())
 			->method('getCurrentVal')
-			->will($this->returnValue(3));
+			->will($this->returnValue(-1));
 
 		$this->fixture->cObj = $stubCObj;
 		$this->fixture->process('', array());
@@ -178,4 +178,3 @@ abstract class AbstractProcessorTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseT
 		$this->assertTrue(TRUE); // If we get to here, we are good and everything is working as expected
 	}
 }
-?>

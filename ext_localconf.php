@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 aijko GmbH <info@aijko.de>
+ *  (c) 2014 AIJKO GmbH <info@aijko.com>
  *
  *  All rights reserved
  *
@@ -34,4 +34,11 @@ if (TYPO3_MODE == 'BE') {
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig('options.hideModules := addToList(CropImagesCropmainmodule)');
 }
 
-?>
+
+// SignalSlot
+$signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
+$signalSlotDispatcher->connect(
+	'TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer',
+	\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::SIGNAL_PREIMAGEPROCESS,
+	'Aijko\\CropImages\\Aspect\\CroppingAspect',
+	'processCropping');

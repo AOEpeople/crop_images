@@ -4,7 +4,7 @@ namespace Aijko\CropImages\Service;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 aijko GmbH <info@aijko.de>
+ *  (c) 2014 AIJKO GmbH <info@aijko.com>
  *
  *  All rights reserved
  *
@@ -29,7 +29,7 @@ namespace Aijko\CropImages\Service;
  * @package crop_images
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
-class CropValues {
+class CropValuesService {
 
 	/**
 	 * Name of backend utility class
@@ -61,7 +61,7 @@ class CropValues {
 		$time = (NULL === $time) ? time() : $time;
 
 		$blueprintXml = trim('
-			<?xml version="1.0" encoding="UTF-8" ?>
+			<?xml version="1.0" encoding="UTF-8"?>
 			<images><image x1="0" y1="0" x2="0" y2="0" tstamp="0" device="' . $deviceKey . '">' . $fileReference->getName() . '</image></images>
 		');
 
@@ -206,4 +206,3 @@ class CropValues {
 
 }
 
-?>

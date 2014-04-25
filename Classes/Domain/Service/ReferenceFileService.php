@@ -4,7 +4,7 @@ namespace Aijko\CropImages\Domain\Service;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 aijko GmbH <info@aijko.de>
+ *  (c) 2014 AIJKO GmbH <info@aijko.com>
  *
  *  All rights reserved
  *
@@ -38,9 +38,9 @@ class ReferenceFileService implements \TYPO3\CMS\Core\SingletonInterface {
 	protected $fileRepository = NULL;
 
 	/**
-	 * @param $table
-	 * @param $imageReference
-	 * @param $data
+	 * @param string $table
+	 * @param int $imageReference
+	 * @param array $data
 	 * @return null|\TYPO3\CMS\Core\Resource\FileReference
 	 */
 	public function getReferenceFile($table, $imageReference, $data) {
@@ -109,4 +109,3 @@ class ReferenceFileService implements \TYPO3\CMS\Core\SingletonInterface {
 	}
 
 }
-?>

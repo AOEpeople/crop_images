@@ -4,7 +4,7 @@ namespace Aijko\CropImages\Observer;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 aijko GmbH <info@aijko.de>
+ *  (c) 2014 AIJKO GmbH <info@aijko.com>
  *
  *  All rights reserved
  *
@@ -110,7 +110,7 @@ class ImageProcessing implements \TYPO3\CMS\Core\SingletonInterface {
 	 * Exception if not, because that is a prerequisite
 	 *
 	 * @return void
-	 * @throws \Aijko\CropImages\Exception\Processing
+	 * @throws \Aijko\CropImages\Exception\ProcessingException
 	 */
 	protected function validateNotificationMap() {
 		$globalCounter = FALSE;
@@ -121,7 +121,7 @@ class ImageProcessing implements \TYPO3\CMS\Core\SingletonInterface {
 				continue;
 			}
 			if ($counter !== $globalCounter) {
-				throw new \Aijko\CropImages\Exception\Processing('Not all image processors have been called an equal amount of times.', 1383115246);
+				throw new \Aijko\CropImages\Exception\ProcessingException('Not all image processors have been called an equal amount of times.', 1383115246);
 			}
 		}
 	}
@@ -137,4 +137,3 @@ class ImageProcessing implements \TYPO3\CMS\Core\SingletonInterface {
 		$this->notificationMap = array();
 	}
 }
-?>

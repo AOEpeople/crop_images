@@ -4,7 +4,7 @@ namespace Aijko\CropImages\Tests\Unit\Service;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 aijko GmbH <info@aijko.de>
+ *  (c) 2014 AIJKO GmbH <info@aijko.com>
  *
  *  All rights reserved
  *
@@ -28,10 +28,10 @@ namespace Aijko\CropImages\Tests\Unit\Service;
 /**
  * Test case for class Tx_CropImages_Controller_ContentController.
  */
-class CropValuesTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class CropValuesServiceTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-	 * @var \Aijko\CropImages\Service\CropValues
+	 * @var \Aijko\CropImages\Service\CropValuesService
 	 */
 	protected $fixture;
 
@@ -44,7 +44,7 @@ class CropValuesTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 *
 	 */
 	public function setUp() {
-		$this->fixture = new \Aijko\CropImages\Service\CropValues();
+		$this->fixture = new \Aijko\CropImages\Service\CropValuesService();
 		$this->databaseHandle = $GLOBALS['TYPO3_DB'];
 	}
 
@@ -385,4 +385,3 @@ class CropValuesTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 
 }
-?>

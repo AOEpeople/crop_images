@@ -4,7 +4,7 @@ namespace Aijko\CropImages\UserFunc;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 aijko GmbH <info@aijko.de>
+ *  (c) 2014 AIJKO GmbH <info@aijko.com>
  *
  *  All rights reserved
  *
@@ -25,11 +25,18 @@ namespace Aijko\CropImages\UserFunc;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use \TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * @package crop_images
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
 abstract class AbstractImageProcessor implements \TYPO3\CMS\Core\SingletonInterface {
+
+	/**
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+	 */
+	protected $objectManager;
 
 	/**
 	 * @var \Aijko\CropImages\Observer\ImageProcessing
@@ -40,6 +47,11 @@ abstract class AbstractImageProcessor implements \TYPO3\CMS\Core\SingletonInterf
 	 * @var \Aijko\CropImages\Domain\Service\ReferenceFileService
 	 */
 	protected $referenceFileService = NULL;
+
+	/**
+	 * @var \Aijko\CropImages\Service\DeviceService
+	 */
+	protected $deviceService = NULL;
 
 	/**
 	 * @var \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
@@ -57,17 +69,17 @@ abstract class AbstractImageProcessor implements \TYPO3\CMS\Core\SingletonInterf
 	 * Checks if the current object is actually used in the context of a userFunc
 	 *
 	 * @return void
-	 * @throws \Aijko\CropImages\Exception\Processing
+	 * @throws \Aijko\CropImages\Exception\ProcessingException
 	 */
 	protected function validateContext() {
 		if (!isset($this->cObj) || !($this->cObj instanceof \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer)) {
-			throw new \Aijko\CropImages\Exception\Processing('Cannot crop without a valid cObj.', 1383038383);
+			throw new \Aijko\CropImages\Exception\ProcessingException('Cannot crop without a valid cObj.', 1383038383);
 		}
 		if (!isset($GLOBALS['TSFE']) || !isset($GLOBALS['TSFE']->tmpl->setup['tt_content.'])) {
-			throw new \Aijko\CropImages\Exception\Processing('Cannot crop without a given TSFE configuration.', 1383038389);
+			throw new \Aijko\CropImages\Exception\ProcessingException('Cannot crop without a given TSFE configuration.', 1383038389);
 		}
 		if ('tt_content' != $this->getTable() || 0 == $this->getImageReferenceUid()) {
-			throw new \Aijko\CropImages\Exception\Processing('Cannot process data outside the context of tt_content and a numeric image reference.', 1383059920);
+			throw new \Aijko\CropImages\Exception\ProcessingException('Cannot process data outside the context of tt_content and a numeric image reference.', 1383059920);
 		}
 	}
 
@@ -105,17 +117,7 @@ abstract class AbstractImageProcessor implements \TYPO3\CMS\Core\SingletonInterf
 	 * @return int
 	 */
 	protected function getDevice() {
-		$sourceCollection = array_keys($GLOBALS['TSFE']->tmpl->setup['tt_content.']['image.']['20.']['1.']['sourceCollection.']);
-		$currentSourceCollection = NULL;
-		$currentIndex = $this->getImageObserver()->getCurrentIndex();
-		if (0 !== $currentIndex) {
-			$currentSourceCollection = $sourceCollection[$currentIndex - 1];
-			// Remove trailing .
-			$currentSourceCollection = substr($currentSourceCollection, 0, -1);
-		}
-		// Identify which device this source collection item belongs to
-		$device = \Aijko\CropImages\Utility\ExtConfiguration::getResponsiveTypeBySourceCollection($currentSourceCollection);
-		return $device;
+		return $this->getDeviceService()->getDevice();
 	}
 
 	/**
@@ -124,35 +126,13 @@ abstract class AbstractImageProcessor implements \TYPO3\CMS\Core\SingletonInterf
 	 * @return null|\TYPO3\CMS\Core\Resource\FileReference
 	 */
 	protected function getCurrentReferenceFile() {
-		$table = $this->getTable();
 		$currentReferenceUid = $this->getImageReferenceUid();
-		$data = $this->getData();
-		$sysReferenceFile = $this->getReferenceFileService()->getReferenceFile($table, $currentReferenceUid, $data);
+		if (0 >= $currentReferenceUid) {
+			return NULL;
+		}
+		$sysReferenceFile = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()
+			->getFileReferenceObject($currentReferenceUid);
 		return $sysReferenceFile;
-	}
-
-	/**
-	 * Gets the image observer
-	 *
-	 * @return \Aijko\CropImages\Observer\ImageProcessing
-	 */
-	protected function getImageObserver() {
-		if (NULL === $this->imageObserver) {
-			$this->imageObserver = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Aijko\\CropImages\\Observer\\ImageProcessing');
-		}
-		return $this->imageObserver;
-	}
-
-	/**
-	 * Gets the image observer
-	 *
-	 * @return \Aijko\CropImages\Domain\Service\ReferenceFileService
-	 */
-	protected function getReferenceFileService() {
-		if (NULL === $this->referenceFileService) {
-			$this->referenceFileService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Aijko\\CropImages\\Domain\\Service\\ReferenceFileService');
-		}
-		return $this->referenceFileService;
 	}
 
 	/**
@@ -165,5 +145,52 @@ abstract class AbstractImageProcessor implements \TYPO3\CMS\Core\SingletonInterf
 		$this->getImageObserver()->notify(get_class($this), $referenceUid);
 	}
 
+	/**
+	 * Gets the image observer
+	 *
+	 * @return \Aijko\CropImages\Observer\ImageProcessing
+	 */
+	protected function getImageObserver() {
+		if (NULL === $this->imageObserver) {
+			$this->imageObserver = $this->getObjectManager()->get('Aijko\\CropImages\\Observer\\ImageProcessing');
+		}
+		return $this->imageObserver;
+	}
+
+	/**
+	 * Gets the image observer
+	 *
+	 * @return \Aijko\CropImages\Domain\Service\ReferenceFileService
+	 */
+	protected function getReferenceFileService() {
+		if (NULL === $this->referenceFileService) {
+			$this->referenceFileService = $this->getObjectManager()->get('Aijko\\CropImages\\Domain\\Service\\ReferenceFileService');
+		}
+		return $this->referenceFileService;
+	}
+
+	/**
+	 * Gets the image observer
+	 *
+	 * @return \Aijko\CropImages\Service\DeviceService
+	 */
+	protected function getDeviceService() {
+		if (NULL === $this->deviceService) {
+			$this->deviceService = $this->getObjectManager()->get('Aijko\\CropImages\\Service\\DeviceService');
+		}
+		return $this->deviceService;
+	}
+
+	/**
+	 * Gets the image observer
+	 *
+	 * @return \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+	 */
+	protected function getObjectManager() {
+		if (NULL === $this->objectManager) {
+			$this->objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		}
+		return $this->objectManager;
+	}
+
 }
-?>

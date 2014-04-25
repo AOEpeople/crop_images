@@ -4,7 +4,7 @@ namespace Aijko\CropImages\UserFunc;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 aijko GmbH <info@aijko.de>
+ *  (c) 2014 AIJKO GmbH <info@aijko.com>
  *
  *  All rights reserved
  *
@@ -38,36 +38,32 @@ class ImageSourceProcessor extends AbstractImageProcessor {
 	 * @param string $content Current value of the params
 	 * @param array $configuration Additional configuration. Not used here
 	 * @return string
-	 * @throws \Aijko\CropImages\Exception\CropProcessing
 	 */
 	public function process($content, $configuration) {
-
 		$this->validateContext();
 		$this->notifyObserver();
-		$responsiveUid = $this->getResponsiveUid();
+		$responsiveUid = $this->getResponsiveFileReferenceUid();
 		if (FALSE !== $responsiveUid) {
 			$content = $responsiveUid;
 		}
-
 		return $content;
 	}
 
 	/**
-	 * Returns the actual new responsive uid
+	 * Returns the uid of the sys_file_reference that is to be rendered for the current device
 	 *
-	 * @return bool|int
+	 * @return int
 	 */
-	protected function getResponsiveUid() {
+	protected function getResponsiveFileReferenceUid() {
 		// Get the cropping information for the device corresponding to the current source collection item
 		$sysReferenceFile = $this->getCurrentReferenceFile();
-		if (!$sysReferenceFile) {
+		if (NULL === $sysReferenceFile) {
 			return FALSE;
 		}
 		$device = $this->getDevice();
 		$responsiveReferenceFile = $this->getReferenceFileService()->getReferenceFileByDevice($sysReferenceFile, $device);
-		$responsiveUid = $responsiveReferenceFile->getOriginalFile()->getUid();
+		$responsiveUid = $responsiveReferenceFile->getUid();
 		return $responsiveUid;
 	}
 
 }
-?>

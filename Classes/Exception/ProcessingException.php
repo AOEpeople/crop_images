@@ -4,7 +4,7 @@ namespace Aijko\CropImages\Exception;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 aijko GmbH <info@aijko.de>
+ *  (c) 2014 AIJKO GmbH <info@aijko.com>
  *
  *  All rights reserved
  *
@@ -28,10 +28,9 @@ namespace Aijko\CropImages\Exception;
 /**
  * An exception when something is wrong within an XML file
  *
- * @author Erik Frister <info@aijko.de>
+ * @author Erik Frister <info@aijko.com>
  */
-class Processing extends \Exception {
+class ProcessingException extends \Exception {
 
 }
 
-?>

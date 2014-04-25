@@ -5,7 +5,7 @@ use \TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 aijko GmbH <info@aijko.de>
+ *  (c) 2014 AIJKO GmbH <info@aijko.com>
  *  
  *  All rights reserved
  *
@@ -33,7 +33,7 @@ use \TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 class ContentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
 	/**
-	 * @var \Aijko\CropImages\Service\CropValues
+	 * @var \Aijko\CropImages\Service\CropValuesService
 	 * @inject
 	 */
 	protected $cropValuesService;
@@ -147,5 +147,3 @@ class ContentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 	}
 
 }
-
-?>

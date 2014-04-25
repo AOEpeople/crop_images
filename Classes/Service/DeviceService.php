@@ -1,5 +1,5 @@
 <?php
-namespace Aijko\CropImages\Utility;
+namespace Aijko\CropImages\Service;
 
 /***************************************************************
  *  Copyright notice
@@ -29,36 +29,30 @@ namespace Aijko\CropImages\Utility;
  * @package crop_images
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
-class EmConfiguration {
-
-	const ENABLE_DEFAULT_RESPONSIVE_TYPES = 'enableDefaultResponsiveTypes';
+class DeviceService {
 
 	/**
-	 * Parses the extension settings.
-	 *
-	 * @param string $key
-	 * @return mixed
+	 * @var \Aijko\CropImages\Observer\ImageProcessing
+	 * @inject
 	 */
-	public static function getSetting($key) {
-		$configuration = self::parseSettings();
-		if (!isset($configuration[$key])) {
-			return NULL;
-		}
-		return $configuration[$key];
-	}
+	protected $imageObserver;
 
 	/**
-	 * Parse settings and return it as array
+	 * Determines the device we are currently rendering for
 	 *
-	 * @return array unserialized extconf settings
+	 * @return int
 	 */
-	public static function parseSettings() {
-		$settings = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['crop_images']);
-		if (!is_array($settings)) {
-			$settings = array();
+	public function getDevice() {
+		$sourceCollection = array_keys($GLOBALS['TSFE']->tmpl->setup['tt_content.']['image.']['20.']['1.']['sourceCollection.']);
+		$currentSourceCollection = NULL;
+		$currentIndex = $this->imageObserver->getCurrentIndex();
+		if (0 !== $currentIndex) {
+			$currentSourceCollection = $sourceCollection[$currentIndex - 1];
+			// Remove trailing .
+			$currentSourceCollection = substr($currentSourceCollection, 0, -1);
 		}
-		return $settings;
+		// Identify which device this source collection item belongs to
+		$device = \Aijko\CropImages\Utility\ExtConfiguration::getResponsiveTypeBySourceCollection($currentSourceCollection);
+		return $device;
 	}
-
 }
-

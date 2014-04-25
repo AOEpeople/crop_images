@@ -4,7 +4,7 @@ namespace Aijko\CropImages\Hooks;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 aijko GmbH <info@aijko.de>
+ *  (c) 2014 AIJKO GmbH <info@aijko.com>
  *
  *  All rights reserved
  *
@@ -32,7 +32,7 @@ namespace Aijko\CropImages\Hooks;
 class ContentObjectRenderer implements \TYPO3\CMS\Frontend\ContentObject\ContentObjectGetImageResourceHookInterface{
 
 	/**
-	 * @var \Aijko\CropImages\Service\CropValues
+	 * @var \Aijko\CropImages\Service\CropValuesService
 	 */
 	protected $cropValuesService;
 
@@ -176,15 +176,14 @@ class ContentObjectRenderer implements \TYPO3\CMS\Frontend\ContentObject\Content
 	/**
 	 * Gets the crop values service
 	 *
-	 * @return \Aijko\CropImages\Service\CropValues
+	 * @return \Aijko\CropImages\Service\CropValuesService
 	 */
 	protected function getCropValuesService() {
 		if (empty($this->cropValuesService)) {
-			$this->cropValuesService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Aijko\\CropImages\\Service\\CropValues');
+			$this->cropValuesService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Aijko\\CropImages\\Service\\CropValuesService');
 		}
 		return $this->cropValuesService;
 	}
 
 }
 
-?>

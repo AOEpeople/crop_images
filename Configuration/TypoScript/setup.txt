@@ -1,7 +1,7 @@
 #/***************************************************************
 # *  Copyright notice
 # *
-# *  (c) 2013 aijko GmbH <info@aijko.de>
+# *  (c) 2014 AIJKO GmbH <info@aijko.com>
 # *
 # *  All rights reserved
 # *
@@ -28,5 +28,12 @@ module.tx_cropimages {
 		templateRootPath = {$module.tx_cropimages.view.templateRootPath}
 		partialRootPath = {$module.tx_cropimages.view.partialRootPath}
 		layoutRootPath = {$module.tx_cropimages.view.layoutRootPath}
+	}
+}
+
+# Default Image Rendering
+tt_content.image.20.1.file {
+	import {
+		postUserFunc = Aijko\CropImages\UserFunc\ImageSourceProcessor->process
 	}
 }

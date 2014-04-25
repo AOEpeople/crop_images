@@ -3,7 +3,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 aijko GmbH <info@aijko.de>
+ *  (c) 2014 AIJKO GmbH <info@aijko.com>
  *
  *  All rights reserved
  *
@@ -29,8 +29,8 @@ $EM_CONF[$_EXTKEY] = array(
 	'description' => 'Crop images with image area select',
 	'category' => 'plugin',
 	'author' => 'Development Team',
-	'author_email' => 'info@aijko.de',
-	'author_company' => 'aijko GmbH',
+	'author_email' => 'info@aijko.com',
+	'author_company' => 'AIJKO GmbH',
 	'shy' => '',
 	'priority' => '',
 	'module' => '',
@@ -41,12 +41,12 @@ $EM_CONF[$_EXTKEY] = array(
 	'modify_tables' => '',
 	'clearCacheOnLoad' => 0,
 	'lockType' => '',
-	'version' => '1.0.0',
+	'version' => '1.1.0',
 	'constraints' => array(
 		'depends' => array(
-			'extbase' => '6.0',
-			'fluid' => '6.0',
-			'typo3' => '6.0',
+			'extbase' => '6.2.0',
+			'fluid' => '6.2.0',
+			'typo3' => '6.2.0',
 		),
 		'conflicts' => array(
 		),
@@ -55,4 +55,3 @@ $EM_CONF[$_EXTKEY] = array(
 	),
 );
 
-?>

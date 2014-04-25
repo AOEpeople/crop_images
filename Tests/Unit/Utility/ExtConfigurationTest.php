@@ -4,7 +4,7 @@ namespace Aijko\CropImages\Tests\Unit\Utility;
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2013 aijko GmbH <info@aijko.de>
+ *  (c) 2014 AIJKO GmbH <info@aijko.com>
  *
  *  All rights reserved
  *
@@ -116,4 +116,3 @@ class ExtConfigurationTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->assertEquals(3, \Aijko\CropImages\Utility\ExtConfiguration::getResponsiveTypeBySourceCollection('my-second-collection'));
 	}
 }
-?>
