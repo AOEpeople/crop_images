@@ -25,6 +25,9 @@ namespace Aijko\CropImages\Service;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use \Aijko\CropImages\Utility\ExtConfiguration;
+use \Aijko\CropImages\Exception\ProcessingException;
+
 /**
  * @package crop_images
  * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
@@ -41,8 +44,12 @@ class DeviceService {
 	 * Determines the device we are currently rendering for
 	 *
 	 * @return int
+	 * @throws ProcessingException
 	 */
 	public function getDevice() {
+		if (!isset($GLOBALS['TSFE'])) {
+			throw new ProcessingException('Can only get source collection in Frontend context.', 1398673667);
+		}
 		$sourceCollection = array_keys($GLOBALS['TSFE']->tmpl->setup['tt_content.']['image.']['20.']['1.']['sourceCollection.']);
 		$currentSourceCollection = NULL;
 		$currentIndex = $this->imageObserver->getCurrentIndex();
@@ -52,7 +59,7 @@ class DeviceService {
 			$currentSourceCollection = substr($currentSourceCollection, 0, -1);
 		}
 		// Identify which device this source collection item belongs to
-		$device = \Aijko\CropImages\Utility\ExtConfiguration::getResponsiveTypeBySourceCollection($currentSourceCollection);
+		$device = ExtConfiguration::getResponsiveTypeBySourceCollection($currentSourceCollection);
 		return $device;
 	}
 }
