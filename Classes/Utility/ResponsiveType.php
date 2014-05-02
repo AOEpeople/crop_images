@@ -35,25 +35,35 @@ class ResponsiveType {
 	const TYPE_TABLE = 'sys_file_reference';
 
 	/**
-	 * Adds a new responsive type
+	 * Adds a new responsive type to the tca
 	 * Allows the new type to be selected by new responsive images and maps the type to the frontend
 	 * by aligning it with a sourceCollection item, making sure the correct image can be selected.
 	 *
 	 * @param string $typeName Label for the Type. Can be an LLL-type path to a label
 	 * @param int $index Index to be used as the key for the item in the <select> field
-	 * @param string $correspondingSourceCollection Comma-separated list of entries in the sourceCollection, see
-	 * 		  http://docs.typo3.org/typo3cms/TyposcriptReference/latest/ContentObjects/Image/Index.html?highlight=sourcecollection
-	 * 		  Determines the mapping between the responsive type cropping and the FE rendering.
 	 * @return void
 	 */
-	public static function addNewResponsiveType($typeName, $index, $correspondingSourceCollection = '') {
+	public static function addNewResponsiveTypeToTca($typeName, $index) {
 		// Add type name to TCA
 		\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItem(self::TYPE_TABLE, self::TYPE_FIELD, array($typeName, $index));
 
 		// Modify max items of responsive images
 		$itemCount = count($GLOBALS['TCA'][self::TYPE_TABLE]['columns'][self::TYPE_FIELD]['config']['items']);
 		$GLOBALS['TCA'][self::TYPE_TABLE]['columns']['tx_cropimages_responsiveimages']['config']['maxitems'] = $itemCount - 1;
+	}
 
+	/**
+	 * Adds a new responsive type to the extconf
+	 * Allows the new type to be selected by new responsive images and maps the type to the frontend
+	 * by aligning it with a sourceCollection item, making sure the correct image can be selected.
+	 *
+	 * @param int $index Index to be used as the key for the item in the <select> field
+	 * @param string $correspondingSourceCollection Comma-separated list of entries in the sourceCollection, see
+	 * 		  http://docs.typo3.org/typo3cms/TyposcriptReference/latest/ContentObjects/Image/Index.html?highlight=sourcecollection
+	 * 		  Determines the mapping between the responsive type cropping and the FE rendering.
+	 * @return void
+	 */
+	public static function addNewResponsiveTypeToExtconf($index, $correspondingSourceCollection = '') {
 		$sourceCollectionItems = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $correspondingSourceCollection);
 
 		// Add source collection matching to the extconf

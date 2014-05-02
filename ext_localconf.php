@@ -34,6 +34,11 @@ if (TYPO3_MODE == 'BE') {
 	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig('options.hideModules := addToList(CropImagesCropmainmodule)');
 }
 
+// Add the two default responsive types
+if (\Aijko\CropImages\Utility\EmConfiguration::getSetting(\Aijko\CropImages\Utility\EmConfiguration::ENABLE_DEFAULT_RESPONSIVE_TYPES)) {
+	\Aijko\CropImages\Utility\ResponsiveType::addNewResponsiveTypeToExtconf(1, 'src-tablet,src-tablet-highres');
+	\Aijko\CropImages\Utility\ResponsiveType::addNewResponsiveTypeToExtconf(2, 'src-phone,src-phone-highres');
+}
 
 // SignalSlot
 $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');

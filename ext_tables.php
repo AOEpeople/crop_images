@@ -98,86 +98,80 @@ $tempColumns = array (
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette('sys_file_reference', 'imageoverlayPalette', '--linebreak--, tx_cropimages_aspectratio, tx_cropimages_cropvalues');
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette('sys_file_reference', 'basicoverlayPalette', '--linebreak--, tx_cropimages_aspectratio, tx_cropimages_cropvalues');
 
-// Responsive Functionality available in v6.2
-$numericVersion = \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(\TYPO3\CMS\Core\Utility\VersionNumberUtility::getNumericTypo3Version());
-if ($numericVersion >= 6002000) {
 
-	$tempColumns = array (
-		'tx_cropimages_responsiveimages' => array (
-			'exclude' => 1,
-			'label' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_db.xlf:tx_cropimages_domain_model_content.tx_cropimages_responsiveimages',
-			'displayCond' => array(
-				'AND' => array(
-					'REC:NEW:false',
-					'FIELD:tablenames:=:tt_content',
+$tempColumns = array (
+	'tx_cropimages_responsiveimages' => array (
+		'exclude' => 1,
+		'label' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_db.xlf:tx_cropimages_domain_model_content.tx_cropimages_responsiveimages',
+		'displayCond' => array(
+			'AND' => array(
+				'REC:NEW:false',
+				'FIELD:tablenames:=:tt_content',
+			),
+		),
+		'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
+			'image',
+			array(
+				'appearance' => array(
+					'createNewRelationLinkTitle' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_db.xlf:tx_cropimages_domain_model_content.tx_cropimages_responsiveimages.createnew'
+				),
+				// maxitems is modified by \Aijko\CropImages\Utility\ResponsiveType::addNewResponsiveType
+				'maxitems' => 0,
+				'foreign_types' => array(
+					'0' => array(
+						'showitem' => '
+						--palette--;;filePalette, tx_cropimages_responsivetype'
+					),
+					\TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT => array(
+						'showitem' => '
+						--palette--;;filePalette, tx_cropimages_responsivetype'
+					),
+					\TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => array(
+						'showitem' => '
+						--palette--;;filePalette, tx_cropimages_responsivetype'
+					),
+					\TYPO3\CMS\Core\Resource\File::FILETYPE_AUDIO => array(
+						'showitem' => '
+						--palette--;;filePalette, tx_cropimages_responsivetype'
+					),
+					\TYPO3\CMS\Core\Resource\File::FILETYPE_VIDEO => array(
+						'showitem' => '
+						--palette--;;filePalette, tx_cropimages_responsivetype'
+					),
+					\TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => array(
+						'showitem' => '
+						--palette--;;filePalette, tx_cropimages_responsivetype'
+					)
 				),
 			),
-			'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
-				'image',
-				array(
-					'appearance' => array(
-						'createNewRelationLinkTitle' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_db.xlf:tx_cropimages_domain_model_content.tx_cropimages_responsiveimages.createnew'
-					),
-					// maxitems is modified by \Aijko\CropImages\Utility\ResponsiveType::addNewResponsiveType
-					'maxitems' => 0,
-					'foreign_types' => array(
-						'0' => array(
-							'showitem' => '
-							--palette--;;filePalette, tx_cropimages_responsivetype'
-						),
-						\TYPO3\CMS\Core\Resource\File::FILETYPE_TEXT => array(
-							'showitem' => '
-							--palette--;;filePalette, tx_cropimages_responsivetype'
-						),
-						\TYPO3\CMS\Core\Resource\File::FILETYPE_IMAGE => array(
-							'showitem' => '
-							--palette--;;filePalette, tx_cropimages_responsivetype'
-						),
-						\TYPO3\CMS\Core\Resource\File::FILETYPE_AUDIO => array(
-							'showitem' => '
-							--palette--;;filePalette, tx_cropimages_responsivetype'
-						),
-						\TYPO3\CMS\Core\Resource\File::FILETYPE_VIDEO => array(
-							'showitem' => '
-							--palette--;;filePalette, tx_cropimages_responsivetype'
-						),
-						\TYPO3\CMS\Core\Resource\File::FILETYPE_APPLICATION => array(
-							'showitem' => '
-							--palette--;;filePalette, tx_cropimages_responsivetype'
-						)
-					),
-				),
-				$GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']),
-		),
-		'tx_cropimages_responsivetype' => array (
-			'exclude' => 1,
-			'label' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_db.xlf:tx_cropimages_domain_model_content.tx_cropimages_responsivetype',
-			'displayCond' => array(
-				'AND' => array(
-					'REC:NEW:false',
-					'FIELD:tablenames:=:sys_file_reference',
-				),
+			$GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext']),
+	),
+	'tx_cropimages_responsivetype' => array (
+		'exclude' => 1,
+		'label' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_db.xlf:tx_cropimages_domain_model_content.tx_cropimages_responsivetype',
+		'displayCond' => array(
+			'AND' => array(
+				'REC:NEW:false',
+				'FIELD:tablenames:=:sys_file_reference',
 			),
-			'config' => array (
-				'type' => 'select',
-				'items' => array (
-					array('', 0),
-				),
-				'minitems' => 1,
-				'maxitems' => 1,
-			)
 		),
-	);
+		'config' => array (
+			'type' => 'select',
+			'items' => array (
+				array('', 0),
+			),
+			'minitems' => 1,
+			'maxitems' => 1,
+		)
+	),
+);
 
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('sys_file_reference', $tempColumns);
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette('sys_file_reference', 'imageoverlayPalette', '--linebreak--, tx_cropimages_responsiveimages');
-	\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette('sys_file_reference', 'basicoverlayPalette', '--linebreak--, tx_cropimages_responsiveimages');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('sys_file_reference', $tempColumns);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette('sys_file_reference', 'imageoverlayPalette', '--linebreak--, tx_cropimages_responsiveimages');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addFieldsToPalette('sys_file_reference', 'basicoverlayPalette', '--linebreak--, tx_cropimages_responsiveimages');
 
-	// Add the two default responsive types
-	if (\Aijko\CropImages\Utility\EmConfiguration::getSetting(\Aijko\CropImages\Utility\EmConfiguration::ENABLE_DEFAULT_RESPONSIVE_TYPES)) {
-		\Aijko\CropImages\Utility\ResponsiveType::addNewResponsiveType('Tablet', 1, 'src-tablet,src-tablet-highres');
-		\Aijko\CropImages\Utility\ResponsiveType::addNewResponsiveType('Mobile', 2, 'src-phone,src-phone-highres');
-	}
-
+// Add the two default responsive types
+if (\Aijko\CropImages\Utility\EmConfiguration::getSetting(\Aijko\CropImages\Utility\EmConfiguration::ENABLE_DEFAULT_RESPONSIVE_TYPES)) {
+	\Aijko\CropImages\Utility\ResponsiveType::addNewResponsiveTypeToTca('Tablet', 1);
+	\Aijko\CropImages\Utility\ResponsiveType::addNewResponsiveTypeToTca('Mobile', 2);
 }
-unset($numericVersion);
