@@ -114,7 +114,7 @@ class ResponsiveTypeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function addNewResponsiveTypeModifiesTca() {
-		\Aijko\CropImages\Utility\ResponsiveType::addNewResponsiveType('my-custom-type', 9, 'desktop-source-collection');
+		\Aijko\CropImages\Utility\ResponsiveType::addNewResponsiveTypeToTca('my-custom-type', 9);
 		$types = \Aijko\CropImages\Utility\ResponsiveType::getAllResponsiveTypes();
 		$expectedResult = array(
 			9 => 'my-custom-type',
@@ -127,13 +127,13 @@ class ResponsiveTypeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function addNewResponsiveTypeModifiesMaxResponsiveImageCount() {
 		$this->assertEquals(0, $GLOBALS['TCA']['sys_file_reference']['columns']['tx_cropimages_responsiveimages']['config']['maxitems']);
-		\Aijko\CropImages\Utility\ResponsiveType::addNewResponsiveType('Default', 0);
+		\Aijko\CropImages\Utility\ResponsiveType::addNewResponsiveTypeToTca('Default', 0);
 		// After adding initial element (default), maxitems should still be 0
 		$this->assertEquals(0, $GLOBALS['TCA']['sys_file_reference']['columns']['tx_cropimages_responsiveimages']['config']['maxitems']);
-		\Aijko\CropImages\Utility\ResponsiveType::addNewResponsiveType('Additional', 1);
+		\Aijko\CropImages\Utility\ResponsiveType::addNewResponsiveTypeToTca('Additional', 1);
 		// Now it should be one
 		$this->assertEquals(1, $GLOBALS['TCA']['sys_file_reference']['columns']['tx_cropimages_responsiveimages']['config']['maxitems']);
-		\Aijko\CropImages\Utility\ResponsiveType::addNewResponsiveType('Additional-2', 2);
+		\Aijko\CropImages\Utility\ResponsiveType::addNewResponsiveTypeToTca('Additional-2', 2);
 		// Now it should be two
 		$this->assertEquals(2, $GLOBALS['TCA']['sys_file_reference']['columns']['tx_cropimages_responsiveimages']['config']['maxitems']);
 	}
@@ -143,7 +143,7 @@ class ResponsiveTypeTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 */
 	public function addNewResponsiveTypeAddsResponsiveTypeToSourceCollection() {
 		$this->assertFalse(isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['crop_images']['source_collection'][9]));
-		\Aijko\CropImages\Utility\ResponsiveType::addNewResponsiveType('my-custom-type', 9, 'desktop-source-collection');
+		\Aijko\CropImages\Utility\ResponsiveType::addNewResponsiveTypeToExtconf(9, 'desktop-source-collection');
 		$this->assertTrue(isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['crop_images']['source_collection'][9][0]));
 		$this->assertSame($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['crop_images']['source_collection'][9][0], 'desktop-source-collection');
 
