@@ -60,6 +60,7 @@ class ImageViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelpe
 		$contentObject = GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 		$contentObject->start(array(), 'tt_content');
 		$contentObject->setCurrentVal($fileId);
+		$contentObject->setCurrentFile($image);
 		$fileArray = $GLOBALS['TSFE']->tmpl->setup['tt_content.']['image.']['20.']['1.'];
 		// Set class
 		if (!empty($class)) {
