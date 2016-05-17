@@ -78,8 +78,8 @@ abstract class AbstractImageProcessor implements \TYPO3\CMS\Core\SingletonInterf
 		if (!isset($GLOBALS['TSFE']) || !isset($GLOBALS['TSFE']->tmpl->setup['tt_content.'])) {
 			throw new \Aijko\CropImages\Exception\ProcessingException('Cannot crop without a given TSFE configuration.', 1383038389);
 		}
-		if ('tt_content' != $this->getTable() || 0 == $this->getImageReferenceUid()) {
-			throw new \Aijko\CropImages\Exception\ProcessingException('Cannot process data outside the context of tt_content and a numeric image reference.', 1383059920);
+		if (0 == $this->getImageReferenceUid()) {
+			throw new \Aijko\CropImages\Exception\ProcessingException('Cannot process data outside a numeric image reference.', 1383059920);
 		}
 	}
 
