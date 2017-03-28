@@ -29,6 +29,12 @@ module.tx_cropimages {
 		partialRootPath = {$module.tx_cropimages.view.partialRootPath}
 		layoutRootPath = {$module.tx_cropimages.view.layoutRootPath}
 	}
+	settings {
+		devicesTabs {
+			sortingEnabled = 1
+			indexOrder =
+		}
+	}
 }
 
 # Default Image Rendering
