@@ -1,5 +1,6 @@
 <?php
 namespace Aijko\CropImages\Controller;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use \TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /***************************************************************
@@ -56,9 +57,11 @@ class ContentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 		$fileReferenceObject = \TYPO3\CMS\Core\Resource\ResourceFactory::getInstance()->getFileReferenceObject($fileReference);
 		$aspectRatio = $fileReferenceObject->getProperty('tx_cropimages_aspectratio');
 
+		$sortedDevices = $this->sortDevices($devices);
+
 		// Get the devices file objects
 		$modifiedDeviceArray = array();
-		foreach ($devices as $key => $label) {
+		foreach ($sortedDevices as $key => $label) {
 
 			$deviceFile = $this->referenceFileService->getReferenceFileByDevice($fileReferenceObject, $key);
 			$cropValues = $this->cropValuesService->getCropValuesFromFileReference($deviceFile, $key);
@@ -135,6 +138,30 @@ class ContentController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControll
 	 */
 	public function closeAction($referer) {
 		$this->redirectToUri($referer);
+	}
+
+	/**
+	 * Sorts the devices by a user-defined ordering (to control the layout of the tabs in the crop module)
+	 *
+	 * @param array $devices
+	 * @return array
+	 */
+	protected function sortDevices(array $devices) {
+		// Sort the devices, if desired
+		$sortedDevices = array();
+		if (!$this->settings['devicesTabs']['sortingEnabled'] || empty($this->settings['devicesTabs']['indexOrder'])) {
+			return $devices;
+		}
+		$order = GeneralUtility::trimExplode(',', $this->settings['devicesTabs']['indexOrder']);
+		foreach ($order as $index) {
+			// Skip unknown entries in the list
+			if (!isset($devices[$index])) {
+				continue;
+			}
+			// Adjust sorting
+			$sortedDevices[$index] = $devices[$index];
+		}
+		return $sortedDevices;
 	}
 
 	/**
